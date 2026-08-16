@@ -1,5 +1,5 @@
 <h1 align="center">Girish Nikose (Amay)</h1>
-<p align="center"><i>CSE Student · Full-Stack &amp; Ai/ml Developer · intern @ Nexacrft</i></p>
+<p align="center"><i>CSE Student · Full-Stack &amp; Ai/ml Developer </i></p>
 
 <table>
 <tr>
