@@ -1,4 +1,4 @@
-<h1 align="center">Girish Nikose (Amay)</h1>
+<h1 align="center">Girish Nikose </h1>
 <p align="center"><i>CSE Student · Full-Stack &amp; Ai/ml Developer </i></p>
 
 <table>
