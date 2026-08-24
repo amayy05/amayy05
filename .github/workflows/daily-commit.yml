@@ -1,0 +1,54 @@
+name: Daily Contribution Bot
+
+on:
+  schedule:
+    # Runs everyday at 04:30 UTC (10:00 AM IST)
+    # Jitter step below adds a random 0-120 minute offset
+    - cron: '30 4 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab for instant testing
+
+permissions:
+  contents: write
+
+jobs:
+  daily-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Randomize execution delay (Cron only)
+        if: github.event_name == 'schedule'
+        run: |
+          # Sleep between 0 and 7200 seconds (0 to 2 hours) to vary commit timestamps
+          DELAY=$((RANDOM % 7200))
+          echo "Scheduled run: sleeping for ${DELAY} seconds before committing..."
+          sleep ${DELAY}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run daily update script
+        run: |
+          python scripts/daily_update.py
+
+      - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Check if daily-log/log.md was modified
+          if [ -n "$(git status --porcelain daily-log/log.md)" ]; then
+            git add daily-log/log.md
+            TODAY_DATE=$(date -u +'%Y-%m-%d')
+            git commit -m "Daily update: ${TODAY_DATE}"
+            git push
+            echo "Changes committed and pushed successfully."
+          else
+            echo "No changes detected (entry already exists for today). Skipping commit."
+          fi
