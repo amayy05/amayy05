@@ -33,7 +33,11 @@ jobs:
 
       - name: Run daily update script
         run: |
-          python scripts/daily_update.py
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python scripts/daily_update.py --force
+          else
+            python scripts/daily_update.py
+          fi
 
       - name: Commit and push changes
         env:
