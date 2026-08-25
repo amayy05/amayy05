@@ -31,8 +31,8 @@ jobs:
 
       - name: Commit if changed
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "amayy05"
+          git config user.email "amaynikose92@gmail.com"
           git add data/contributions.json contrib-heatmap.svg
           git diff --cached --quiet || git commit -m "chore: refresh contribution graph"
           git push
